@@ -3,6 +3,7 @@ import {Link,useNavigate} from "react-router-dom"
 import { useState } from 'react';
 import {useDispatch,useSelector} from 'react-redux'
 import { signInStart,signInFailure,signInSuccess } from '../redux/user/userSlice.js';
+import OAuth from '../components/OAuth.jsx';
 const SignIn = () => {
   const [formData,setFormData] = useState({});
   const dispatch = useDispatch();
@@ -43,9 +44,10 @@ const SignIn = () => {
       <form onSubmit={handleSubmit} className='flex flex-col gap-5'>
           <input onChange={handleChange} className="p-3 border border-gray-300 rounded-md focus:outline-none" type="email" name="email" placeholder='email'/>
           <input onChange={handleChange} className="p-3 border border-gray-300 rounded-md focus:outline-none" type="password" name="password" placeholder='password'/>
-          <button disabled={loading} className='p-3  text-blue-500 border border-gray-500 rounded-md text-2xl text-transform: uppercase hover:bg-blue-500 hover:text-white transition-all delay-75 hover:tracking-[.25em]' type='submit'>
+          <button disabled={loading} className='p-3  bg-blue-400 text-white border border-gray-500 rounded-md text-xl text-transform: uppercase hover:bg-blue-500 hover:text-white transition-all delay-75 hover:tracking-[.25em] disabled:opacity-80' type='submit'>
             {loading?'Processing...':'Sign In'}
           </button>
+          <OAuth/>
       </form>
       <div className='flex gap-2 my-5 underline text-sm md:text-lg'>
           <p>Dont have an account?</p>

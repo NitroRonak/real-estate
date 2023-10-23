@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.parent:hover .child{
+    color: rgb(196, 197, 255);
+}
