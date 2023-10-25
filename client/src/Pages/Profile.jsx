@@ -2,13 +2,17 @@ import { useSelector } from 'react-redux'
 import { useEffect, useRef, useState } from 'react';
 import {getDownloadURL,getStorage, ref, uploadBytesResumable} from 'firebase/storage'
 import { app } from '../../firebase.js';
+import { updateUserStart,updateUserSuccess,updateUserFailure } from '../redux/user/userSlice.js';
+import { useDispatch } from 'react-redux';
 const Profile = () => {
   const fileRef=useRef(null);
-  const {currentUser}=useSelector((state)=>state.user);
+  const dispatch = useDispatch();
+  const {currentUser,loading ,error}=useSelector((state)=>state.user);
   const [file,setFile]=useState(undefined);
   const [filePerc,setFilePerc]=useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
+  const [updateSuccess, setUpdateSuccess] = useState(false);
   useEffect(()=>{
     if(file){
       handleFileUpload(file);
@@ -38,6 +42,32 @@ const Profile = () => {
         }
       )  
   }
+  const handleChange=(e)=>{
+    setFormData({...formData,[e.target.name]:e.target.value});
+  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      dispatch(updateUserStart());
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(updateUserFailure(data.message));
+        return;
+      }
+
+      dispatch(updateUserSuccess(data));
+      setUpdateSuccess(true);
+    } catch (error) {
+      dispatch(updateUserFailure(error.message));
+    }
+  };
   return (
     <main className='flex flex-col lg:flex-row lg:justify-between items-center lg:my-40'>
       <section className='w-11/12 sm:w-4/12 mx-auto my-2 flex flex-col justify-center items-center gap-4 lg:border-r-2'>
@@ -62,16 +92,20 @@ const Profile = () => {
 
       </section>
       <section className='w-11/12 sm:w-6/12 mx-auto my-10 lg:w-4/12 lg:ml-2'>
-      <form className='flex flex-col gap-5'>
-          <input  className="p-1 sm:p-3 border border-gray-300 rounded-md focus:outline-none" type="text" name="username" placeholder='username'/>
-          <input  className="p-1 sm:p-3 border border-gray-300 rounded-md focus:outline-none" type="email" name="email" placeholder='email'/>
-          <input  className="p-1 sm:p-3 border border-gray-300 rounded-md focus:outline-none" type="password" name="password" placeholder='password'/>  
-          <button className='font-bold tracking-wider bg-slate-600 text-white rounded-md p-2 hover:bg-slate-800 transition-all delay-75transition-all delay-75transition-all delay-75transition-all delay-75transition-all delay-75 hover:-tracking-[-0.45em] disabled:opacity-80'>UPDATE</button>
+      <form onSubmit={handleSubmit} className='flex flex-col gap-5'>
+          <input onChange={handleChange} defaultValue={currentUser.username} className="p-1 sm:p-3 border border-gray-300 rounded-md focus:outline-none" type="text" name="username" placeholder='username'/>
+          <input onChange={handleChange} defaultValue={currentUser.email} className="p-1 sm:p-3 border border-gray-300 rounded-md focus:outline-none" type="email" name="email" placeholder='email'/>
+          <input onChange={handleChange} className="p-1 sm:p-3 border border-gray-300 rounded-md focus:outline-none" type="password" name="password" placeholder='password'/>  
+          <button disabled={loading} type='submit' className='font-bold tracking-wider bg-slate-600 text-white rounded-md p-2 hover:bg-slate-800 transition-all delay-75transition-all delay-75transition-all delay-75transition-all delay-75transition-all delay-75 hover:-tracking-[-0.45em] disabled:opacity-80'>
+            {loading?'Updating...':'UPDATE'}
+          </button>
       </form>
       <div className='flex justify-between mt-5 text-red-700 font-bold lg:text-xl text-base'>
         <span className='cursor-pointer hover:underline'>Delete Account</span>
         <span className='cursor-pointer hover:underline'>Sign Out</span>
       </div>
+      <p className='text-red-800 font-bold text-center mt-1'>{error?`Error: ${error}`:""}</p>
+      <p className='text-green-600 font-bold text-center mt-5'>{updateSuccess?'User successfully update!':""}</p>
       </section>
     </main>
   )
