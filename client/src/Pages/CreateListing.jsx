@@ -3,7 +3,7 @@ import React from 'react'
 const CreateListing = () => {
   return (
     <main className='p-3 max-w-4xl md:max-w-5xl mx-auto'>
-        <h1 className='text-center font-bold text-base text-2xl sm:text-3xl mt-3 mb-6'>CREATE LISTING</h1>
+        <h1 className='text-center font-bold text-2xl sm:text-3xl mt-3 mb-6'>CREATE LISTING</h1>
         <form className='flex flex-col sm:flex-row gap-5 md:gap-9'>
             <div className='flex flex-col gap-5 flex-1 md:border-r p-2'>
                 <input type="text" placeholder='Name' id='name'
