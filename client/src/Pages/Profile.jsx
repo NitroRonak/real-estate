@@ -4,6 +4,7 @@ import {getDownloadURL,getStorage, ref, uploadBytesResumable} from 'firebase/sto
 import { app } from '../../firebase.js';
 import { updateUserStart,updateUserSuccess,updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutFailure, signOutSuccess } from '../redux/user/userSlice.js';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 const Profile = () => {
   const fileRef=useRef(null);
   const dispatch = useDispatch();
@@ -128,9 +129,10 @@ const Profile = () => {
           <input onChange={handleChange} defaultValue={currentUser.username} className="p-1 sm:p-3 border border-gray-300 rounded-md focus:outline-none" type="text" name="username" placeholder='username'/>
           <input onChange={handleChange} defaultValue={currentUser.email} className="p-1 sm:p-3 border border-gray-300 rounded-md focus:outline-none" type="email" name="email" placeholder='email'/>
           <input onChange={handleChange} className="p-1 sm:p-3 border border-gray-300 rounded-md focus:outline-none" type="password" name="password" placeholder='password'/>  
-          <button disabled={loading} type='submit' className='font-bold tracking-wider bg-slate-600 text-white rounded-md p-2 hover:bg-slate-800 transition-all delay-75transition-all delay-75transition-all delay-75transition-all delay-75transition-all delay-75 hover:-tracking-[-0.45em] disabled:opacity-80'>
+          <button disabled={loading} type='submit' className='font-bold tracking-wider bg-slate-600 text-white rounded-md p-2 hover:bg-slate-800 transition-all delay-75 hover:-tracking-[-0.45em] disabled:opacity-80'>
             {loading?'Updating...':'UPDATE'}
           </button>
+          <Link className='bg-green-500 rounded-md p-2 font-bold  text-center text-white hover:bg-green-900 transition-all delay-75 hover:-tracking-[-0.25em] disabled:opacity-80' to={"/create-listing"}>CREATE LISTING</Link>
       </form>
       <div className='flex justify-between mt-5 text-red-700 font-bold lg:text-xl text-base'>
         <span onClick={handleDelete} className='cursor-pointer hover:underline'>Delete Account</span>
