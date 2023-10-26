@@ -4,6 +4,7 @@ import dotenv from "dotenv"
 import cookieParser from 'cookie-parser';
 import authRoute from "./routes/authRoute.js"
 import userRoute from './routes/userRoute.js'
+import listingRoute from './routes/listingRoute.js'
 dotenv.config();
 mongoose.connect(process.env.DB_URL)
 .then(()=>console.log("Connected to Database"))
@@ -16,6 +17,7 @@ app.listen(3000,()=>{
 })
 app.use("/api/auth",authRoute);
 app.use("/api/user",userRoute);
+app.use('/api/listing',listingRoute);
 app.use((err, req, res, next)=>{
     const statusCode = err.statusCode || 500;
     const message = err.message || 'Internal Server Error';
