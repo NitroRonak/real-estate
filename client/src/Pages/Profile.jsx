@@ -122,6 +122,24 @@ const Profile = () => {
       setListingsLoadingError(true);
       setListingsLoading(false);
     }
+  };
+
+  const handleListingDelete=async (id)=>{
+    try{
+      const res=await fetch(`/api/listing/delete/${id}`,{
+        method: 'DELETE'
+      })
+      const data=res.json();
+      if(data.success===false){
+        console.log(data.message);
+        return;
+      }
+      setListings((prev)=>prev.filter(listing=>listing._id!==id));
+    }
+    catch(err){
+      console.log(err.message);
+
+    }
   }
   return (
     <>
@@ -180,7 +198,7 @@ const Profile = () => {
                 <p className='text-xs md:text-base uppercase font-semibold'>{listing.name}</p>
               </Link>
               <div className='flex flex-col gap-2'>
-                <button className='text-sm md:text-base text-red-800 font-semibold hover:underline'>Delete</button>
+                <button onClick={(e)=>handleListingDelete(listing._id)} className='text-sm md:text-base text-red-800 font-semibold hover:underline'>Delete</button>
                 <button className='text-sm md:text-base font-semibold hover:underline text-green-700'>Edit</button>
               </div>
           </div>
