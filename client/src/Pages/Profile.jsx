@@ -14,6 +14,9 @@ const Profile = () => {
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [listings,setListings] = useState([]);
+  const [listingsLoading,setListingsLoading] = useState(false);
+  const [listingsLoadingError, setListingsLoadingError] = useState(false);
   useEffect(()=>{
     if(file){
       handleFileUpload(file);
@@ -100,9 +103,29 @@ const Profile = () => {
     catch(error){
       dispatch(signOutFailure(error.message));
     }
+  };
+
+  const handleShowListing=async ()=>{
+    try{
+      setListingsLoading(true);
+      setListingsLoadingError(false);
+      const res=await fetch(`/api/user/listings/${currentUser._id}`);
+      const data=await res.json();
+      setListings(data);
+      setListingsLoading(false);
+      if(data.success===false){
+        setListingsLoadingError(true);
+        return;
+      }
+    }
+    catch(err){
+      setListingsLoadingError(true);
+      setListingsLoading(false);
+    }
   }
   return (
-    <main className='flex flex-col lg:flex-row lg:justify-between items-center lg:my-40'>
+    <>
+    <main className='flex flex-col lg:flex-row lg:justify-between items-center lg:my-3'>
       <section className='w-11/12 sm:w-4/12 mx-auto my-2 flex flex-col justify-center items-center gap-4 lg:border-r-2'>
         <h1 className='font-bold text-purple-900 text-xl md:text-3xl'>PROFILE</h1>
         <input onChange={(e)=>setFile(e.target.files[0])} type="file" ref={fileRef} hidden accept='image/*'/>
@@ -124,7 +147,7 @@ const Profile = () => {
         </p>
 
       </section>
-      <section className='w-11/12 sm:w-6/12 mx-auto my-10 lg:w-4/12 lg:ml-2'>
+      <section className='w-11/12 sm:w-6/12 mx-auto my-1 lg:w-4/12 lg:ml-2'>
       <form onSubmit={handleSubmit} className='flex flex-col gap-5'>
           <input onChange={handleChange} defaultValue={currentUser.username} className="p-1 sm:p-3 border border-gray-300 rounded-md focus:outline-none" type="text" name="username" placeholder='username'/>
           <input onChange={handleChange} defaultValue={currentUser.email} className="p-1 sm:p-3 border border-gray-300 rounded-md focus:outline-none" type="email" name="email" placeholder='email'/>
@@ -142,6 +165,28 @@ const Profile = () => {
       <p className='text-green-600 font-bold text-center mt-5'>{updateSuccess?'User successfully update!':""}</p>
       </section>
     </main>
+    <div className='flex flex-col justify-center w-11/12 sm:w-7/12 mx-auto my-1 lg:w-6/12 gap-2'>
+      <button disabled={listingsLoading} onClick={handleShowListing} className='text-green-600 font-bold uppercase md:text-2xl disabled:opacity-40'>
+          {listingsLoading?'Showing...':'Show Listing'}
+      </button>
+      <p className='text-red-800 text-sm font-semibold text-center'>{listingsLoadingError?'Error showing listings!':''}</p>
+
+      {listings.length>0 && listings.map((listing,index) =>(
+          <div key={listing._id} className='border border-gray-200 flex justify-between items-center p-3 mb-3 shadow-sm rounded-lg'>
+              <Link to={`/listing/${listing._id}`}>
+                <img className='w-16 h-16 sm:w-20 sm:h-20 lg:w-32 lg:h-32  object-contain' src={listing.imageUrls[0]} alt="listing image" />
+              </Link>
+              <Link className='hover:underline truncate' to={`/listing/${listing._id}`}>
+                <p className='text-xs md:text-base uppercase font-semibold'>{listing.name}</p>
+              </Link>
+              <div className='flex flex-col gap-2'>
+                <button className='text-sm md:text-base text-red-800 font-semibold hover:underline'>Delete</button>
+                <button className='text-sm md:text-base font-semibold hover:underline text-green-700'>Edit</button>
+              </div>
+          </div>
+      ))}
+    </div>
+    </>
   )
 }
 
