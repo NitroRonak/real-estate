@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import {MdLocationOn} from 'react-icons/md'
 const ListingCard = ({listing}) => {
   return (
-    <div className='bg-white shadow-md hover:shadow-xl transition-shadow duration-150 overflow-hidden rounded-lg w-full sm:w-[320px]'>
+    <div className='bg-white shadow-md hover:shadow-xl hover:border hover:border-gray-400 transition-all duration-150 overflow-hidden rounded-lg w-full sm:w-[320px]'>
       <Link to={`/listing/${listing._id}`} className='flex flex-col'>
         <img className='h-[220px] w-full object-cover hover:scale-105 transition-scale duration-200 ' src={listing.imageUrls[0]} alt="Listing Image" />
         <div className='flex flex-col p-3 gap-2'>
