@@ -196,7 +196,7 @@ const CreateListing = () => {
                     type="number"  id="regularPrice" onChange={handleChange} value={formData.regularPrice} required />
                     <div className='flex flex-col'>
                       <p className='font-bold'>Regular Price</p>
-                      <span>(₹ /month)</span>
+                      <span>{formData.type==='rent'?'(/month)':''}</span>
                     </div>
                   </div>
 

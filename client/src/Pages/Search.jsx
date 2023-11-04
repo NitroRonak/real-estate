@@ -1,5 +1,7 @@
 import {useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom';
+import {Bars} from 'react-loader-spinner'
+import ListingCard from '../components/ListingCard';
 const Search = () => {
     const navigate = useNavigate();
     const [loading,setLoading] = useState(false);
@@ -160,8 +162,30 @@ const Search = () => {
       </div>
 
       {/* right div */}
-      <div>
+      <div className='p-7 w-full'>
         <h1 className='text-3xl font-semibold text-slate-700 mt-5'>Listing Results:</h1>
+        <div className='flex flex-wrap gap-4 items-center justify-center sm:justify-start mt-5'>
+            {!loading && listings.length===0 && (
+                <p className='font-semibold text-slate-600 text-xl'>No listing found!</p>
+            )}
+            {loading && (
+                <Bars
+                height="80"
+                width="80"
+                color="#510b8a"
+                ariaLabel="bars-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+              />
+            )}
+
+            {
+                !loading && listings && listings.map(listing=>(
+                    <ListingCard key={listing._id} listing={listing}/>
+                ))
+            }
+        </div>
       </div>
     </div>
   )
