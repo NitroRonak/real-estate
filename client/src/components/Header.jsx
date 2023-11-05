@@ -28,8 +28,8 @@ const Header = () => {
             <span className='text-gray-700'>RS-</span>
             <span className='text-blue-950'>Estate</span>
         </h1>
-        <form  onSubmit={handleSearchSubmit} className=' bg-gray-200 p-3 rounded-lg flex items-center'>
-            <input className="bg-transparent focus:outline-none w-24 sm:w-64" 
+        <form  onSubmit={handleSearchSubmit} className=' bg-gray-200 sm:p-3 p-1 rounded-lg flex items-center'>
+            <input className="bg-transparent focus:outline-none w-28 sm:w-64" 
             value={searchTerm}  onChange={(e)=>setSearchTerm(e.target.value)} type="text" placeholder='Search.....'/>
             <button>
               <FaSearch className='text-gray-500 '/>
@@ -40,7 +40,7 @@ const Header = () => {
           <Link className='hidden text-sm sm:text-xl sm:inline text-gray-700 hover:text-blue-500 font-bold' to="/about">About</Link>
           <Link to="/profile">
             {currentUser?(
-              <img className='rounded-lg h-15 w-12 object-cover' src={currentUser.avatar} alt='profile'/>
+              <img className='rounded-lg sm:h-15 sm:w-12 h-10 w-10 object-cover' src={currentUser.avatar} alt='profile'/>
             ):(
               <li className='text-sm sm:text-xl sm:inline text-gray-700 hover:text-blue-500 font-bold'>Sign in</li>
             )}
