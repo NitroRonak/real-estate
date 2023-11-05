@@ -5,6 +5,7 @@ import 'swiper/css/bundle'
 import SwiperCore from 'swiper'
 import {Navigation} from 'swiper/modules'
 import Offer from '../assets/images/offers.png'
+import HomeBG from '../assets/images/home.png'
 import ListingCard from '../components/ListingCard'
 const Home = () => {
   const [offerListings,setOfferListings]=useState([]);
@@ -14,7 +15,7 @@ const Home = () => {
   useEffect(()=>{
     const fetchOfferListings = async ()=>{
       try{
-        const res=await fetch(`/api/listing/get?offer=true&limit=4`);
+        const res=await fetch(`/api/listing/get?offer=true&limit=3`);
         const data=await res.json();
         setOfferListings(data);
         fetchRentListings();
@@ -26,7 +27,7 @@ const Home = () => {
 
     const fetchRentListings = async ()=>{
       try{
-        const res=await fetch(`/api/listing/get?type=rent&limit=4`);
+        const res=await fetch(`/api/listing/get?type=rent&limit=3`);
         const data=await res.json();
         setRentListings(data);
         fetchSaleListings();
@@ -38,7 +39,7 @@ const Home = () => {
 
     const fetchSaleListings=async ()=>{
       try{
-        const res=await fetch('/api/listing/get?type=sale&limit=4');
+        const res=await fetch('/api/listing/get?type=sale&limit=3');
         const data=await res.json();
         setSaleListings(data);
       }
@@ -49,16 +50,17 @@ const Home = () => {
     fetchOfferListings();
   },[])
   return (
-    <div className='homepageBG'>
-      <div className="w-full h-[470px] bg-home-Bg bg-cover bg-center flex flex-col
-        gap-10 p-7
+    <div >
+      <div className="w-full h-[470px]  bg-cover bg-center flex flex-col
+        gap-10 
       ">
-        <h1 className='text-3xl text-white font-bold lg:text-6xl mt-10'>
+        <img src={HomeBG} className='absolute w-full h-[470px] z-[-11]' alt="image" />
+        <h1 className='text-3xl text-white font-bold lg:text-6xl mt-10 ml-7'>
           Find your next <span className='text-slate-800'>perfect</span>
           <br />
           place with ease
         </h1>
-        <div className='text-white font-semibold text-sm md:text-xl'>
+        <div className='text-white font-semibold text-sm md:text-xl ml-7'>
           RS-Estate is the best place to find your next perfect 
           place to live.
           <br />
@@ -66,7 +68,7 @@ const Home = () => {
           choose from.
         </div>
         <Link to="/search" className='p-3 bg-blue-700 w-40 text-white rounded-lg
-          hover:tracking-wide hover:bg-blue-800 transition-all 
+          hover:tracking-wide hover:bg-blue-800 transition-all ml-7
         '>
           Let's get started...
         </Link>

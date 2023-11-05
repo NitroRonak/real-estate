@@ -6,10 +6,7 @@ export default {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'home-Bg': "url('D:/React Prac/real-state-project/client/src/assets/images/home.png')",
-        'offer-Bg': "url('D:/React Prac/real-state/client/src/assets/images/offers.jpg')",
-      }
+      
     },
   },
   plugins: [],
