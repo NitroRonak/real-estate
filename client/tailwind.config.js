@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'home-Bg': "url('D:/React Prac/real-state-project/client/src/assets/images/home.png')",
+      }
+    },
   },
   plugins: [],
 }
